@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class BasicSearchDto implements SearchCondition {
-    private String field;
-    private String value;
+@AllArgsConstructor
+@Data
+public class LawResultData {
+
+    private String highlight;
+    private String lawId;
 }

@@ -1,16 +1,11 @@
 package com.udd.lawsearch.shared.pdfservice;
 
-import org.apache.pdfbox.io.RandomAccessFile;
-import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
 public class PdfService {
@@ -20,9 +15,8 @@ public class PdfService {
             String content = textStripper.getText(document);
             return extractPersonInfo(content);
         } catch (IOException e) {
-            System.out.println("Greksa pri konvertovanju dokumenta u pdf");
+            throw new RuntimeException("Greksa pri konvertovanju dokumenta u pdf");
         }
-        return null;
     }
 
     private PdfContentData extractPersonInfo(String content) {
@@ -56,6 +50,6 @@ public class PdfService {
                 return new PdfContentData(ime, prezime, content);
             }
         }
-        return null;
+        return new PdfContentData("Imenko", "Prezimic", content);
     }
 }

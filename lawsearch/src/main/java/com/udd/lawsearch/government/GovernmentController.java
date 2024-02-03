@@ -1,6 +1,7 @@
 package com.udd.lawsearch.government;
 
 import com.udd.lawsearch.elastic.contract.ContractIndexService;
+import com.udd.lawsearch.elastic.law.LawIndexService;
 import com.udd.lawsearch.exceptions.EntityNotFoundException;
 import com.udd.lawsearch.government.dto.GovernmentDto;
 import com.udd.lawsearch.governmentType.GovernmentType;
@@ -23,6 +24,7 @@ public class GovernmentController {
     private final FileStorageService fileStorageService;
     private final ContractIndexService contractIndexService;
     private final GeoCodingService geoCodingService;
+    private final LawIndexService lawIndexService;
 
     @PostMapping
     public ResponseEntity<Void> createGovernment(@ModelAttribute GovernmentDto dto) throws Exception {
@@ -33,6 +35,7 @@ public class GovernmentController {
             fileStorageService.uploadFile(file);
         }
         contractIndexService.create(dto, gov.getGovernmentType().getName(), gov.getLocation().getLatitude(), gov.getLocation().getLongitude());
+        lawIndexService.create(dto, gov.getGovernmentType().getName());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

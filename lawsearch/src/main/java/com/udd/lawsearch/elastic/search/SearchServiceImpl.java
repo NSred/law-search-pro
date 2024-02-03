@@ -9,10 +9,7 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.udd.lawsearch.elastic.search.dtos.BasicSearchDto;
-import com.udd.lawsearch.elastic.search.dtos.LocationSearchDto;
-import com.udd.lawsearch.elastic.search.dtos.ResultData;
-import com.udd.lawsearch.elastic.search.dtos.SearchResult;
+import com.udd.lawsearch.elastic.search.dtos.*;
 import com.udd.lawsearch.shared.location.GeoCodingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -88,6 +85,108 @@ public class SearchServiceImpl implements SearchService{
 
         HitsMetadata<ObjectNode> hitsMetadata = searchResponse.hits();
         return createResponse(hitsMetadata);
+    }
+
+    @Override
+    public SearchResult advancedSearch(SearchCondition condition) throws IOException {
+        Query query = buildQuery(condition);
+
+        SearchResponse<ObjectNode> response = esClient.search(
+                SearchRequest.of(s -> s
+                        .index("contracts")
+                        .query(query)
+                        .highlight(h -> h
+                                .fields("content", f -> f)
+                        )
+                ),
+                ObjectNode.class
+        );
+
+        HitsMetadata<ObjectNode> hitsMetadata = response.hits();
+        return createResponse(hitsMetadata);
+    }
+
+    private Query buildQuery(SearchCondition condition) {
+        if (condition instanceof BasicSearchDto simpleCondition) {
+            return Query.of(q -> q
+                    .match(m -> m
+                            .field(simpleCondition.getField())
+                            .query(simpleCondition.getValue())
+                    )
+            );
+        } else if (condition instanceof BoolQueryDto booleanCondition) {
+            List<Query> innerQueries = new ArrayList<>();
+            for (SearchConditionWrapper innerConditionWrapper : booleanCondition.getBooleanQueryFields()) {
+                innerQueries.add(buildQuery(innerConditionWrapper.getCondition()));
+            }
+
+            switch (booleanCondition.getOperator().toUpperCase()) {
+                case "AND":
+                    return Query.of(q -> q.bool(b -> b.must(innerQueries)));
+                case "OR":
+                    return Query.of(q -> q.bool(b -> b.should(innerQueries).minimumShouldMatch("1")));
+                case "NOT":
+                    if (innerQueries.size() == 1) {
+                        return Query.of(q -> q.bool(b -> b.mustNot(innerQueries.get(0))));
+                    } else {
+                        throw new IllegalArgumentException("NOT operator should have only one condition");
+                    }
+                default:
+                    throw new IllegalArgumentException("Unsupported operator: " + booleanCondition.getOperator());
+            }
+        } else {
+            throw new IllegalArgumentException("Unknown condition type: " + condition.getClass().getName());
+        }
+    }
+
+    @Override
+    public LawSearchResult lawSearch(BasicSearchDto dto) throws IOException, RuntimeException {
+        SearchResponse<ObjectNode> response = esClient.search(
+                SearchRequest.of(s -> s
+                        .index("laws")
+                        .query(q -> q
+                                .match(t -> t
+                                        .field(dto.getField())
+                                        .query(dto.getValue())
+                                )
+                        )
+                        .highlight(h -> h
+                                .fields("content", f -> f
+                                        .highlightQuery(hq -> hq
+                                                .match(mq -> mq
+                                                        .field("content")
+                                                        .query(dto.getValue())
+                                                )
+                                        )
+                                )
+                        )
+                ),
+                ObjectNode.class
+        );
+
+        HitsMetadata<ObjectNode> hitsMetadata = response.hits();
+        return createLawsResponse(hitsMetadata);
+    }
+
+    private LawSearchResult createLawsResponse(HitsMetadata<ObjectNode> hitsMetadata) {
+        List<LawResultData> responses = new ArrayList<>();
+        List<Hit<ObjectNode>> searchHits = hitsMetadata.hits();
+
+        for (Hit<ObjectNode> h: searchHits) {
+            LawResultData searchResponse = new LawResultData();
+            ObjectNode json = h.source();
+
+            if (h.highlight().isEmpty()) {
+                searchResponse.setHighlight(Objects.requireNonNull(json).get("content").asText().substring(0, 150) + "...");
+            } else {
+                searchResponse.setHighlight("..." + h.highlight().get("content").get(0) + "...");
+            }
+            searchResponse.setLawId(h.id());
+
+            responses.add(searchResponse);
+        }
+
+        return new LawSearchResult(responses, Objects.requireNonNull(hitsMetadata.total()).value());
     }
 
     private SearchResult createResponse(HitsMetadata<ObjectNode> hitsMetadata) {

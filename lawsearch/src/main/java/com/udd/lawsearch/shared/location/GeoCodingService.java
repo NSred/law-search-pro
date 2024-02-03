@@ -18,10 +18,11 @@ public class GeoCodingService {
                 double latitude = response[0].get("lat").asDouble();
                 double longitude = response[0].get("lon").asDouble();
                 return new double[]{latitude, longitude};
+            } else {
+                throw new RuntimeException("An error occurred while getting address");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Provided address is not valid!");
         }
-        return null;
     }
 }

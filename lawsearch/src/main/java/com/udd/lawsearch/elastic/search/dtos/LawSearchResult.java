@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoolQueryField {
-    private String field;
-    private String value;
-    private String operator;
-    private boolean isPhrase;
+public class LawSearchResult {
+    private List<LawResultData> results;
+    private Long numberOfResults;
 }
