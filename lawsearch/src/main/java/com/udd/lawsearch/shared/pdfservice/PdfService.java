@@ -13,10 +13,54 @@ public class PdfService {
         try (PDDocument document = PDDocument.load(stream)){
             PDFTextStripper textStripper = new PDFTextStripper();
             String content = textStripper.getText(document);
-            return extractPersonInfo(content);
+            return extractKeyData(content);
         } catch (IOException e) {
             throw new RuntimeException("Greksa pri konvertovanju dokumenta u pdf");
         }
+    }
+
+    private PdfContentData extractKeyData(String content) {
+        PdfContentData data = extractPersonInfo(content); // Assume this method is defined elsewhere
+
+        // Find the starting index of "Uprava za"
+        int govIndex = content.indexOf("Uprava za");
+
+        if (govIndex != -1) {
+            String governmentName = null;
+            String governmentType = null;
+            String governmentAddress = null;
+            int count = 0; // Counter for '<' occurrences
+
+            // Loop to find and extract data between '<' and '>'
+            for (int i = govIndex; i < content.length(); i++) {
+                if (content.charAt(i) == '<') {
+                    int endIndex = content.indexOf('>', i); // Find the closing '>'
+                    if (endIndex != -1) {
+                        String dataBetweenTags = content.substring(i + 1, endIndex);
+                        count++;
+                        switch (count) {
+                            case 1: // First occurrence is government name
+                                governmentName = dataBetweenTags;
+                                break;
+                            case 2: // Second occurrence is government type
+                                governmentType = dataBetweenTags;
+                                break;
+                            case 3: // Third occurrence is government address
+                                governmentAddress = dataBetweenTags;
+                                break;
+                        }
+                        i = endIndex; // Move the index to the end of the current tag
+                    }
+                }
+                if (count == 3) break; // Break the loop after extracting all three pieces of information
+            }
+
+            // Update the PdfContentData object with government information
+            data.setGovernmentName(governmentName);
+            data.setGovernmentType(governmentType);
+            data.setGovernmentAddress(governmentAddress);
+        }
+        return data;
     }
 
     private PdfContentData extractPersonInfo(String content) {
@@ -47,9 +91,9 @@ public class PdfService {
             }
 
             if (ime != null && prezime != null) {
-                return new PdfContentData(ime, prezime, content);
+                return new PdfContentData(ime, prezime, content, null, null, null);
             }
         }
-        return new PdfContentData("Imenko", "Prezimic", content);
+        return new PdfContentData("Imenko", "Prezimic", content, null, null, null);
     }
 }

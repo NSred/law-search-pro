@@ -4,10 +4,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.GeoPointField;
+import org.springframework.data.elasticsearch.annotations.*;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 @Data
@@ -17,13 +14,33 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 public class ContractIndex {
     @Id
     private String id;
-    @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian", store = true)
+    @MultiField(
+            mainField = @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian"),
+            otherFields = {
+                    @InnerField(suffix = "keyword", type = FieldType.Keyword, ignoreAbove = 256)
+            }
+    )
     private String signatoryPersonName;
-    @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian", store = true)
+    @MultiField(
+            mainField = @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian"),
+            otherFields = {
+                    @InnerField(suffix = "keyword", type = FieldType.Keyword, ignoreAbove = 256)
+            }
+    )
     private String signatoryPersonSurname;
-    @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian", store = true)
+    @MultiField(
+            mainField = @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian"),
+            otherFields = {
+                    @InnerField(suffix = "keyword", type = FieldType.Keyword, ignoreAbove = 256)
+            }
+    )
     private String governmentName;
-    @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian", store = true)
+    @MultiField(
+            mainField = @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian"),
+            otherFields = {
+                    @InnerField(suffix = "keyword", type = FieldType.Keyword, ignoreAbove = 256)
+            }
+    )
     private String governmentType;
     @GeoPointField
     private GeoPoint governmentLocation;

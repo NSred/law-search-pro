@@ -62,9 +62,15 @@ public class QueryParser {
         // Assuming the basic search is in the format "field:value"
         String[] parts = query.split(":");
         String field = parts[0].trim();
-        String value = parts[1].trim().replaceAll("^\"|\"$", ""); // Remove surrounding quotes
+        String value = parts[1].trim(); // Remove surrounding quotes
+        boolean isPhrase = false;
 
-        BasicSearchDto basicSearchDto = new BasicSearchDto(field, value);
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            isPhrase = true;
+            // Remove surrounding quotes
+            value = value.substring(1, value.length() - 1);
+        }
+        BasicSearchDto basicSearchDto = new BasicSearchDto(field, value, isPhrase);
         return new SearchConditionWrapper(basicSearchDto, null);
     }
 

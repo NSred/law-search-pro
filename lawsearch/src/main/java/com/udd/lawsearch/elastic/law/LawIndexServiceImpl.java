@@ -1,5 +1,6 @@
 package com.udd.lawsearch.elastic.law;
 
+import com.udd.lawsearch.documents.UploadDocsDto;
 import com.udd.lawsearch.government.dto.GovernmentDto;
 import com.udd.lawsearch.shared.filestorage.FileStorageService;
 import com.udd.lawsearch.shared.pdfservice.PdfContentData;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 
 import java.io.InputStream;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +23,8 @@ public class LawIndexServiceImpl implements LawIndexService{
     @Value("${bucket-name}")
     private String bucketName;
     @Async
-    public void create(final GovernmentDto govDto, final String govTypeName) throws Exception {
-        for(MultipartFile law : govDto.getLaws()){
+    public void create(final List<MultipartFile> files) throws Exception {
+        for(MultipartFile law : files){
             String filename = law.getOriginalFilename();
             InputStream stream = fileStorageService.getFileFromMinio(bucketName,filename);
             PdfContentData data = pdfService.getContentData(stream);

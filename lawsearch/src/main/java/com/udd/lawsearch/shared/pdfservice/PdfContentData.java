@@ -11,4 +11,7 @@ public class PdfContentData {
     private String name;
     private String surname;
     private String content;
+    private String governmentName;
+    private String governmentType;
+    private String governmentAddress;
 }

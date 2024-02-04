@@ -108,6 +108,13 @@ public class SearchServiceImpl implements SearchService{
 
     private Query buildQuery(SearchCondition condition) {
         if (condition instanceof BasicSearchDto simpleCondition) {
+            if (((BasicSearchDto) condition).isPhrase())
+                return Query.of(q -> q
+                        .matchPhrase(m -> m
+                                .field(simpleCondition.getField())
+                                .query(simpleCondition.getValue())
+                        )
+                );
             return Query.of(q -> q
                     .match(m -> m
                             .field(simpleCondition.getField())

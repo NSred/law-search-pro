@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class BasicSearchDto implements SearchCondition {
     private String field;
     private String value;
+    private boolean isPhrase;
 }

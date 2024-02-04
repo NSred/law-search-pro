@@ -34,8 +34,8 @@ public class GovernmentController {
         for (MultipartFile file : dto.getLaws()) {
             fileStorageService.uploadFile(file);
         }
-        contractIndexService.create(dto, gov.getGovernmentType().getName(), gov.getLocation().getLatitude(), gov.getLocation().getLongitude());
-        lawIndexService.create(dto, gov.getGovernmentType().getName());
+        contractIndexService.create(dto.getContract().getOriginalFilename());
+        lawIndexService.create(dto.getLaws());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -1,7 +1,10 @@
 package com.udd.lawsearch.elastic.law;
 
-import com.udd.lawsearch.government.dto.GovernmentDto;
+import com.udd.lawsearch.documents.UploadDocsDto;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface LawIndexService {
-    void create(GovernmentDto govDto, String govTypeName) throws Exception;
+    void create(List<MultipartFile> files) throws Exception;
 }
