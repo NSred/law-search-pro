@@ -14,4 +14,5 @@ public class ResultData {
     private String signatoryPersonSurname;
     private String highlight;
     private String contractId;
+    private String fileName;
 }

@@ -1,0 +1,26 @@
+<div class="wrapper">
+  <app-select-base
+    [options]="fieldOptions"
+    [currentOption]="currentField"
+    (selectedOption)="onSelectionChange($event)"/>
+  <app-input-field
+    [placeholder]="'Enter a value'"
+    [control]="inputValueForm"
+  />
+  <app-checkbox-base
+    [label]="'Phrase'"
+    [value]="isPhrase"
+    (onClick)="phraseChange()"
+  />
+  <app-checkbox-base
+    [label]="'NOT'"
+    [value]="isNotOperator"
+    (onClick)="operatorChange()"
+  />
+  <div>
+    <label class="add-label" [textContent]="'+ AND'" (click)="onAndClick()"></label>
+  </div>
+  <div>
+    <label class="add-label" [textContent]="'+ OR'" (click)="onOrClick()"></label>
+  </div>
+</div>

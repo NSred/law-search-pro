@@ -1,0 +1,8 @@
+@import "../../../../sass/variables";
+.select-base {
+  color: var(--text-color);
+  background: var(--secondary);
+  border-radius: 8px;
+  border: 1px solid var(--selection-color);
+  padding: 0.45rem;
+}

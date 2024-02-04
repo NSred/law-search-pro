@@ -208,6 +208,7 @@ public class SearchServiceImpl implements SearchService{
             searchResponse.setGovernmentType(json.get("governmentType").asText());
             searchResponse.setSignatoryPersonName(json.get("signatoryPersonName").asText());
             searchResponse.setSignatoryPersonSurname(json.get("signatoryPersonSurname").asText());
+            searchResponse.setFileName(json.get("fileName").asText());
 
             if (h.highlight().isEmpty()) {
                 searchResponse.setHighlight(json.get("content").asText().substring(0, 150) + "...");

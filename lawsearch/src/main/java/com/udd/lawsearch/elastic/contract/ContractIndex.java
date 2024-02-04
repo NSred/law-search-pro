@@ -46,13 +46,16 @@ public class ContractIndex {
     private GeoPoint governmentLocation;
     @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian")
     private String content;
+    @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian")
+    private String fileName;
 
-    public ContractIndex(String signatoryPersonName, String signatoryPersonSurname, String governmentName, String governmentType, String content, double lat, double lon) {
+    public ContractIndex(String signatoryPersonName, String signatoryPersonSurname, String governmentName, String governmentType, String content, double lat, double lon, String fileName) {
         this.signatoryPersonName = signatoryPersonName;
         this.signatoryPersonSurname = signatoryPersonSurname;
         this.governmentName = governmentName;
         this.governmentType = governmentType;
         this.governmentLocation = new GeoPoint(lat, lon);
         this.content = content;
+        this.fileName = fileName;
     }
 }

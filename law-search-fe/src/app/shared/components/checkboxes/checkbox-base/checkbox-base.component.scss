@@ -1,0 +1,17 @@
+@import "../../../../sass/variables";
+
+.checkbox-component {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.checkbox {
+  margin-top: 0.3rem;
+  accent-color: var(--selection-color);
+  width: 20px;
+  height: 20px;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 1rem $shadow-color-dark;
+}

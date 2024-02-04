@@ -1,0 +1,28 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="header">
+      <h2>Search contracts</h2>
+    </div>
+    <div class="filter" *ngFor="let filter of filters">
+      <ng-container *ngIf="filter.operator" class="operator-label">
+        <hr/>
+        <div>{{ filter.operator }}</div>
+      </ng-container>
+      <app-advanced-filter
+        [index]="filter.id"
+        (onAnd)="onAndClick()"
+        (onOr)="onOrClick()"/>
+    </div>
+    <div class="btn">
+      <app-button [info]="'Search'" (onClick)="search()"/>
+    </div>
+    <div *ngIf="searchResult$ | async as searchResult">
+      <div class="header">
+        <h2>Results</h2>
+      </div>
+      <div class="card" *ngFor="let result of searchResult.results">
+        <app-contract-card [contract]="result"/>
+      </div>
+    </div>
+  </div>
+</div>

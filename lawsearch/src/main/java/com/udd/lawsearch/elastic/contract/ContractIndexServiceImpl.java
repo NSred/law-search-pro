@@ -27,7 +27,7 @@ public class ContractIndexServiceImpl implements ContractIndexService{
         PdfContentData data = pdfService.getContentData(stream);
         var coords = geoCodingService.getCoordinates(data.getGovernmentAddress());
         ContractIndex index = new ContractIndex(data.getName(), data.getSurname(),
-                data.getGovernmentName(), data.getGovernmentType(), data.getContent(), coords[0], coords[1]);
+                data.getGovernmentName(), data.getGovernmentType(), data.getContent(), coords[0], coords[1], fileName);
 
         contractIndexRepository.save(index);
     }

@@ -1,0 +1,27 @@
+<div class="card-wrapper">
+  <div class="name">
+    Document name: &nbsp;
+    {{contract.fileName}}
+  </div>
+  <div class="name">
+    Government name: &nbsp;
+    {{contract.governmentName}}
+  </div>
+  <div class="name">
+    Government type: &nbsp;
+    {{contract.governmentType}}
+  </div>
+  <div class="name">
+    Highlight: &nbsp;
+    {{contract.highlight}}
+  </div>
+  <div class="name">
+    Signatory person: &nbsp;
+    {{contract.signatoryPersonName + ' ' + contract.signatoryPersonSurname}}
+  </div>
+  <div class="button">
+    <app-button
+      [info]="'Download'"
+    />
+  </div>
+</div>

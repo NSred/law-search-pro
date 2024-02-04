@@ -1,0 +1,27 @@
+<div class="checkbox-component">
+  <ng-container *ngIf="!isInverted">
+    <div class="checkbox-container">
+      <input
+        class="checkbox"
+        type="checkbox"
+        [indeterminate]="indeterminate"
+        [(ngModel)]="value"
+        (click)="click()"
+      />
+    </div>
+    <label [textContent]="label"></label>
+  </ng-container>
+  <ng-container *ngIf="isInverted">
+    <label [textContent]="label"></label>
+    <div class="checkbox-container">
+      <input
+        class="checkbox"
+        type="checkbox"
+        [indeterminate]="indeterminate"
+        [(ngModel)]="value"
+        (click)="click()"
+        (change)="changeCheckbox()"
+      />
+    </div>
+  </ng-container>
+</div>

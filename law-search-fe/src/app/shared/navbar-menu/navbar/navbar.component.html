@@ -1,0 +1,27 @@
+<mat-toolbar class="container-nav" color="primary">
+  <div class="logo">
+    <div>
+      <img
+        ngSrc="../../../../assets/images/elasticicon512.png"
+        height="70"
+        width="70"
+        alt="logo"
+        priority
+      />
+    </div>
+    <div>
+      <label class="logo-label">LawSearchPro</label>
+    </div>
+  </div>
+  <div class="navbar-elements">
+    <app-navbar-button
+      [iconName]="'group'"
+      (click)="gotoSearchLaws()"
+    >Search laws</app-navbar-button>
+    <app-navbar-button
+      (click)="gotoSearchContracts()"
+      [iconName]="'group'">Search contracts</app-navbar-button>
+  </div>
+</mat-toolbar>
+
+

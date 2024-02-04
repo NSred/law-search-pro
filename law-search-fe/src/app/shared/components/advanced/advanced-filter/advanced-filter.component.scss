@@ -1,0 +1,15 @@
+@import "../../../../sass/variables";
+
+.wrapper {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-label {
+  color: var(--selection-color);
+  &:hover {
+    cursor: pointer;
+  }
+}
