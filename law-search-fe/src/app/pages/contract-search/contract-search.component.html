@@ -17,11 +17,19 @@
       <app-button [info]="'Search'" (onClick)="search()"/>
     </div>
     <div *ngIf="searchResult$ | async as searchResult">
-      <div class="header">
-        <h2>Results</h2>
+      <div *ngIf="searchResult.results.length > 0">
+        <div class="header">
+          <h2>Results</h2>
+        </div>
+        <div class="card" *ngFor="let result of searchResult.results">
+          <app-contract-card
+            [contract]="result"
+            (onDownload)="downloadFile($event)"
+          />
+        </div>
       </div>
-      <div class="card" *ngFor="let result of searchResult.results">
-        <app-contract-card [contract]="result"/>
+      <div *ngIf="searchResult.results.length === 0">
+        <h3><b>No results found</b></h3>
       </div>
     </div>
   </div>

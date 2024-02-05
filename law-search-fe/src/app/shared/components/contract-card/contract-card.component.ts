@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ButtonComponent} from "../button/button.component";
 import {Contract} from "../../services/search.service";
 
@@ -15,4 +15,9 @@ export class ContractCardComponent {
   @Input() contract: Contract = {contractId: '', fileName: '',
     governmentName: '', governmentType: '',
     signatoryPersonName: '', signatoryPersonSurname: '', highlight: ''}
+  @Output() onDownload: EventEmitter<string> = new EventEmitter
+
+  download() {
+    this.onDownload.emit(this.contract.fileName);
+  }
 }

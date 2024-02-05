@@ -1,0 +1,24 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="header">
+      <h2>Upload contracts and laws</h2>
+    </div>
+    <div class="upload-container">
+      <div class="file-input">
+        <label [textContent]="'Upload contract: '"></label>
+        <app-file-input
+          (fileSelected)="contractSelected($event)"
+        />
+      </div>
+      <div class="file-input">
+        <label [textContent]="'Upload laws: '"></label>
+        <app-multiple-file-input
+          (multipleFilesSelected)="lawsSelected($event)"
+        />
+      </div>
+    </div>
+    <div class="btn">
+      <app-button [info]="'Upload'" (onClick)="upload()"/>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="header">
+      <h2>Search contracts by location</h2>
+    </div>
+    <div class="upload-container">
+      <div class="file-input">
+        <label [textContent]="'Enter address: '"></label>
+        <app-input-field
+          [placeholder]="'Format: number, street, city, country'"
+          [control]="formControlAddress"
+        />
+      </div>
+      <div class="file-input">
+        <label [textContent]="'Enter radius: '"></label>
+        <app-input-field
+          [type]="'number'"
+          [placeholder]="'Please enter a value in km'"
+          [control]="formControlRadius"
+        />
+      </div>
+    </div>
+    <div class="btn">
+      <app-button [info]="'Search'" (onClick)="search()"/>
+    </div>
+    <div *ngIf="(response$ | async) as response">
+      <div *ngIf="response.results.length > 0">
+        <div class="header">
+          <h2>Results</h2>
+        </div>
+        <div class="card" *ngFor="let result of response.results">
+          <app-contract-card
+            [contract]="result"
+            (onDownload)="downloadFile($event)"
+          />
+        </div>
+      </div>
+      <div *ngIf="response.results.length === 0">
+        <h3><b>No results found</b></h3>
+      </div>
+    </div>
+  </div>
+</div>

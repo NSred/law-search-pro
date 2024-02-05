@@ -1,27 +1,33 @@
 <div class="card-wrapper">
-  <div class="name">
-    Document name: &nbsp;
+  <div class="header">
+    <i><b>Document name:</b></i>
+    &nbsp;
     {{contract.fileName}}
   </div>
   <div class="name">
-    Government name: &nbsp;
+    <i><b>Government name:</b></i>
+    &nbsp;
     {{contract.governmentName}}
   </div>
   <div class="name">
-    Government type: &nbsp;
+    <i><b>Government type:</b></i>
+    &nbsp;
     {{contract.governmentType}}
   </div>
   <div class="name">
-    Highlight: &nbsp;
+    <i><b>Highlight:</b></i>
+    &nbsp;
     {{contract.highlight}}
   </div>
   <div class="name">
-    Signatory person: &nbsp;
+    <i><b>Signatory person:</b></i>
+    &nbsp;
     {{contract.signatoryPersonName + ' ' + contract.signatoryPersonSurname}}
   </div>
   <div class="button">
     <app-button
       [info]="'Download'"
+      (onClick)="download()"
     />
   </div>
 </div>

@@ -20,15 +20,19 @@ public class QueryParser {
     }
 
     private SearchConditionWrapper parseCondition(String query) {
-        // Check for the existence of top-level AND/OR/NOT operators
         if (query.contains(" OR ")) {
             return parseBooleanQuery("OR", query.split(" OR "));
         } else if (query.contains(" AND ")) {
             return parseBooleanQuery("AND", query.split(" AND "));
-        } else if (query.startsWith(" NOT ")) {
+        } else {
+            return parseBasicOrNotQuery(query);
+        }
+    }
+
+    private SearchConditionWrapper parseBasicOrNotQuery(String query) {
+        if (query.startsWith("NOT ")) {
             return parseNotQuery(query.substring(4));
         } else {
-            // Base case: no logical operators, so it must be a basic search condition
             return parseBasicSearch(query);
         }
     }

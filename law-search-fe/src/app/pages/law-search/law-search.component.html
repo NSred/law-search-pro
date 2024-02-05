@@ -1,0 +1,33 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="header">
+      <h2>Search laws</h2>
+    </div>
+    <div class="upload-container">
+      <div class="file-input">
+        <label [textContent]="'Search laws: '"></label>
+        <app-input-field
+          [placeholder]="'Search'"
+          [control]="formControl"
+        />
+      </div>
+    </div>
+    <div class="btn">
+      <app-button [info]="'Search'" (onClick)="search()"/>
+    </div>
+    <div *ngIf="(response$ | async) as response">
+      <div *ngIf="response.results.length > 0">
+        <div class="header">
+          <h2>Results</h2>
+        </div>
+        <div class="card" *ngFor="let result of response.results">
+          <app-law-card [law]="result"/>
+        </div>
+      </div>
+      <div *ngIf="response.results.length === 0">
+        <h3><b>No results found</b></h3>
+      </div>
+    </div>
+  </div>
+</div>
+

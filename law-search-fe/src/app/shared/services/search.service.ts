@@ -17,6 +17,21 @@ export interface ContractsResponse {
   results: Contract[]
 }
 
+export interface Law {
+  highlight : string
+  lawId: string
+}
+
+export interface LawsResponse {
+  numberOfResults: number
+  results: Law[]
+}
+
+export interface LocationDto {
+  address: string
+  radius: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,5 +43,13 @@ export class SearchService {
 
   searchAdvanced(query: string): Observable<ContractsResponse>{
     return this.httpClient.post<ContractsResponse>(`${this.baseUrl}/advanced`, query, {headers: this.headers})
+  }
+
+  searchLaws(query: string): Observable<LawsResponse>{
+    return this.httpClient.post<LawsResponse>(`${this.baseUrl}/laws`, query, {headers: this.headers})
+  }
+
+  searchLocation(dto: LocationDto): Observable<ContractsResponse>{
+    return this.httpClient.post<ContractsResponse>(`${this.baseUrl}/location`, dto, {headers: this.headers})
   }
 }

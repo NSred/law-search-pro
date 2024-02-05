@@ -1,0 +1,36 @@
+@import "../../../sass/variables";
+
+.card-wrapper {
+  background-color: var(--secondary);
+  color: var(--text-color);
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  min-width: 17rem;
+  min-height: 12rem;
+}
+
+.name {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0.5rem;
+  font-size: 20px;
+}
+
+.header {
+  background-color: var(--tercial);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0.5rem;
+  font-size: 20px;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
